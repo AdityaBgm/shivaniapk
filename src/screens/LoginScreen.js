@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, Text, StyleSheet, Alert } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useLoginUser, useVerifyOtp } from '../hooks/useAuth';
 
 const LoginScreen = ({ navigation }) => {
@@ -25,18 +26,28 @@ const LoginScreen = ({ navigation }) => {
     });
   };
 
-  const handleVerify = () => {
-    verifyOtpMutation.mutate({ 
-      mobile,
-      otp,
-      agent_name: 'shivaniMatka'
-    }, {
-      onSuccess: () => {
-        navigation.navigate('Home');
-      }
-      // onError is already handled in the useVerifyOtp hook
-    });
+const handleVerify = () => {
+  const payload = {
+    mobile,
+    otp: Number(otp),
+    agent_name: 'shivaniMatka',
   };
+
+  console.log('Verifying OTP with:', payload);
+
+verifyOtpMutation.mutate(payload, {
+  onSuccess: async (data) => {
+    try {
+      await AsyncStorage.setItem('authToken', data.token);
+      await AsyncStorage.setItem('mobileNumber', mobile);
+      navigation.navigate('Home');
+    } catch (error) {
+      console.error("Error saving token to storage:", error);
+    }
+  }
+});
+};
+
 
   return (
     <View style={styles.container}>

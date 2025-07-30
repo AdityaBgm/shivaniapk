@@ -1,4 +1,6 @@
 import React, { useState, useRef } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { 
   View, 
   Text, 
@@ -76,6 +78,27 @@ const handleMenuPress = (screen) => {
     navigation.navigate(screen);
   }, 300);
 };
+
+const handleLogout = async () => {
+  try {
+    await AsyncStorage.removeItem('authToken');
+    await AsyncStorage.removeItem('mobileNumber');
+    // You can also clear everything if needed:
+    // await AsyncStorage.clear();
+
+    closeMenu(); // close side menu first
+    setTimeout(() => {
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Login' }],
+      });
+    }, 300);
+  } catch (error) {
+    console.error("Logout error:", error);
+    alert("Logout failed. Please try again.");
+  }
+};
+
 
   return (
     <>
@@ -157,13 +180,14 @@ const handleMenuPress = (screen) => {
                 ))}
 
                 {/* Logout option */}
-                <TouchableOpacity style={styles.menuItem} onPress={() => alert('Logout functionality to be implemented')}>
-                  <View style={styles.menuItemContent}>
-                    <Icon name="sign-out" size={20} color="#fff" style={styles.menuIcon} />
-                    <Text style={styles.menuTitle}>Logout</Text>
-                    <Icon name="chevron-right" size={16} color="#fff" style={styles.chevronIcon} />
-                  </View>
-                </TouchableOpacity>
+             <TouchableOpacity style={styles.menuItem} onPress={handleLogout}>
+  <View style={styles.menuItemContent}>
+    <Icon name="sign-out" size={20} color="#fff" style={styles.menuIcon} />
+    <Text style={styles.menuTitle}>Logout</Text>
+    <Icon name="chevron-right" size={16} color="#fff" style={styles.chevronIcon} />
+  </View>
+</TouchableOpacity>
+
               </ScrollView>
             </View>
 
