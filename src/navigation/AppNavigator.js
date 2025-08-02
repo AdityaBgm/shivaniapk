@@ -13,6 +13,7 @@ import MyPlayHistory from '../screens/MyPlayHistory';
 import AppDetails from '../screens/AppDetails';
 import LoginScreen from '../screens/LoginScreen';
 import PlayingGame from '../screens/PlayingGame';
+import PlayHistoryDetail from '../screens/PlayHistoryDetail';
 
 const Stack = createNativeStackNavigator();
 
@@ -37,6 +38,7 @@ export default function AppNavigator() {
       <Stack.Screen name="MyPlayHistory" component={MyPlayHistory} options={{ headerShown: false }} />
       <Stack.Screen name="AppDetails" component={AppDetails} options={{ headerShown: false }} />
       <Stack.Screen name="PlayingGame" component={PlayingGame} options={{ headerShown: false }} />
+      <Stack.Screen name="PlayHistoryDetail" component={PlayHistoryDetail} />
     </Stack.Navigator>
   );
 }

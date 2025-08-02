@@ -50,7 +50,6 @@ const handlePlaceBet = () => {
     return;
   }
 
-  // 👇 Add this log to inspect payload
   console.log("Placing Bet Payload:", betArray);
 
   placeBet(betArray, {
@@ -61,11 +60,12 @@ const handlePlaceBet = () => {
       setPointsRemaining(689);
     },
     onError: (err) => {
-      console.log("Bet placement error:", err); // 👈 Log error too
-      Alert.alert("Error", "Failed to place bet111. Please try again.");
+      console.log("Bet placement error:", err);
+      Alert.alert("Error", "Failed to place bet. Please try again.");
     },
   });
 };
+
 
 
   const renderGrid = () => {
